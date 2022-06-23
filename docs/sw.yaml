@@ -1,0 +1,153 @@
+---
+swagger: "2.0"
+info:
+  description: "This is a sample ToDo server.  \n"
+  version: 1.0.0
+  title: Swagger ToDo
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: virtserver.swaggerhub.com
+basePath: /SANIYAAHUJA/ToDo/1.0.0
+tags:
+- name: Items
+  description: All your todos
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+- name: completed items
+  description: Access to completed items
+schemes:
+- https
+- http
+paths:
+  /ToDo/upadteItem:
+    put:
+      tags:
+      - Items
+      summary: Update an existing item
+      operationId: updateItem
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Item that needs to be added
+        required: true
+        schema:
+          $ref: '#/definitions/'
+      responses:
+        "200":
+          description: Successful!
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Item not found
+        "500":
+          description: Internal Server Error
+  /Items/findByStatus:
+    get:
+      tags:
+      - Items
+      summary: Finds items by status
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findPetsByStatus
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: status
+        in: query
+        description: Status values that need to be considered for filter
+        required: true
+        type: array
+        items:
+          type: string
+          default: Pending
+          enum:
+          - Completed
+          - Pending
+          - Deleted
+        collectionFormat: multi
+      responses:
+        "200":
+          description: Successful!
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Item not found
+        "500":
+          description: Internal Server Error
+  /Items/postItem/{itemId}:
+    post:
+      tags:
+      - Items
+      summary: Adds an item
+      operationId: AddItemWithForm
+      consumes:
+      - application/x-www-form-urlencoded
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: itemId
+        in: path
+        description: item that needs to be updated
+        required: true
+        type: string
+      - name: desc
+        in: body
+        description: Updated description of the item
+        required: false
+        type: string
+      - name: due
+        in: body
+        description: Updated due date of the item
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Successful!
+        "400":
+          description: Invalid input
+        "404":
+          description: Item not found
+        "500":
+          description: Internal Server Error
+  /Items/deleteItem/{itemId}:
+    delete:
+      tags:
+      - Items
+      summary: Deletes an item
+      operationId: deleteItem
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: api_key
+        in: header
+        required: false
+        type: string
+      - name: itemId
+        in: path
+        description: Item to delete
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: Successful!
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Item not found
+        "500":
+          description: Internal Server Error
+definitions: {}
